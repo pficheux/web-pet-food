@@ -1,0 +1,28 @@
+Test Wi-Fi RPi
+==============
+
+Adaptateur EDIMAX:
+
+[126091.165573] usb 3-2: Product: 802.11n WLAN Adapter
+[126091.165578] usb 3-2: Manufacturer: Realtek
+[126091.165582] usb 3-2: SerialNumber: 00e04c000001
+[126091.215092] rtl8192cu: Chip version 0x10
+[126091.249196] rtl8192cu: MAC address: 74:da:38:54:5a:9e
+[126091.249206] rtl8192cu: Board Type 0
+
+$ lsusb
+...
+Bus 003 Device 092: ID 7392:7811 Edimax Technology Co., Ltd EW-7811Un 802.11n Wireless Adapter [Realtek RTL8188CUS]
+...
+
+Sur Raspbian, utiliser ce fichier /etc/network/interfaces:
+
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet manual
+wpa-ssid "MY_SSID"
+wpa-psk "MY_PASSWORD"
+
+Voir: http://omarriott.com/aux/raspberry-pi-wifi
+
+Test à faire sur Buildroot, voir http://www.digitalpeer.com/blog/wireless-on-raspberry-pi-with-buildroot
