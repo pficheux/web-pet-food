@@ -1,1 +1,1 @@
-* * * * * crontab /tmp/cron.tab
+* * * * * crontab /var/www/wpf/cron.tab
