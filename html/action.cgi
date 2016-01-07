@@ -21,7 +21,7 @@ display_and_save ()
     fi
     
     echo "$1 H $2 MN<BR>"
-    echo "$2 $1 * * * ${BASE}/feed.sh" >> ${BASE}/cron.tab
+    echo "$2 $1 * * * /home/wpf/bin/feed.sh" >> ${BASE}/cron.tab
 }
 
 # display & save result to cron file
