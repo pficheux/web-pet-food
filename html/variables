@@ -1,2 +1,8 @@
-export BASE=/var/www/wpf
+# Vaeiables for WPF
 
+# Pet name
+export PET_NAME=Hanae
+
+# base directry
+export BASE=/var/www/wpf
+#export BASE=/tmp
