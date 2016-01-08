@@ -1,5 +1,7 @@
-index.html		page Web de configuration des heures/mn
-action.cgi		CGI associé -> crée la table CRON
+index.cgi		page principale dynamique
+set_time.html		forme de saisie des h/mn
+refresh.sh		affiche current.html + set_time.html
+action.cgi		CGI associée à la forme -> crée la table CRON
 cron.tab		table CRON initiale
 feed.sh			script appelé par CRON
 variables		paramètres
@@ -18,9 +20,9 @@ Dans /etc/apache2/sites-available/default
 		AddHandler cgi-script .cgi
 	</Directory>
 
-2- Copier index.html et action.cgi dans /var/www/wpf
+2- Copier index.cgi, refresh.sh et action.cgi dans /var/www/wpf
 
-3- Ouvrir http://localhost/wpf/index.html et configurer les heures/mn
+3- Ouvrir http://localhost/wpf/index.cgi et configurer les heures/mn
 
 Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab" chargé par 'crontab' :
 
@@ -37,6 +39,12 @@ Le fichier cron.tab doit être initialisé à
 et appartenir à www-data:www-data (voir /etc/apache2/envvars), mode 0666
 
 -rw-rw-rw- 1 www-data www-data   73 janv.  7 11:13 cron.tab
+
+Le fichier current.html doit être vide (au départ) et appartenir à www-data:www-data
+
+# echo > current.html
+# chown www-data:www-data current.html
+# chmod 666 current.html
 
 
 Le script /home/wpf/bin/feed.sh contient;

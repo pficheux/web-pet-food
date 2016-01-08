@@ -28,19 +28,14 @@ display_and_save ()
 
 echo "* * * * * crontab ${BASE}/cron.tab" > ${BASE}/cron.tab
 
-cat << EOF
-<BODY>
-$PET_NAME mangera &agrave; :
+cat << EOF > ${BASE}/current.html
+Horaires pour $PET_NAME :
 <P>
 `display_and_save $PROG1_H $PROG1_MN`
 `display_and_save $PROG2_H $PROG2_MN`
 `display_and_save $PROG3_H $PROG3_MN`
 `display_and_save $PROG4_H $PROG4_MN`
 <P>
-<INPUT TYPE="button" VALUE="Retour" onClick="history.go(-1);">
-<BODY>
-
 EOF
 
-
-
+./refresh.sh
