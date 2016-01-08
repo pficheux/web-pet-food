@@ -3,6 +3,6 @@
 # Pet name
 export PET_NAME=Hanae
 
-# base directry
+# base directory
 export BASE=/var/www/wpf
-#export BASE=/tmp
+

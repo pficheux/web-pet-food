@@ -1,3 +1,12 @@
+index.html		page Web de configuration des heures/mn
+action.cgi		CGI associé -> crée la table CRON
+cron.tab		table CRON initiale
+feed.sh			script appelé par CRON
+variables		paramètres
+
+display_values.sh 	script utilisé pour produire la liste des h/mn
+
+
 1- Modifier la config Apache2 afin d'accepter l'exécution des CGI dans
 /var/www + les noms de CGI en '.cgi' (ExecCGI + AddHandler)
 
@@ -9,7 +18,7 @@ Dans /etc/apache2/sites-available/default
 		AddHandler cgi-script .cgi
 	</Directory>
 
-2- Copier time.html et action.cgi dans /var/www/wpf
+2- Copier index.html et action.cgi dans /var/www/wpf
 
 3- Ouvrir http://localhost/wpf/index.html et configurer les heures/mn
 
@@ -38,11 +47,12 @@ Le script /home/wpf/bin/feed.sh contient;
 
 
 
-Le système (utilisateur 'root') doit être initialisé par un crontab contenant:
+Le système (utilisateur 'root') doit être initialisé par une table CRON 
+permettant de mettre à jour les heures d'appel (appel à crontab).
 
 * * * * * crontab /var/www/wpf/cron.tab
 
-Le fichier /etc/rc.local contient l'appel à l'init des relais
+Le fichier /etc/rc.local contient l'appel à l'init des relais.
 
 # WPF
 /home/wpf/bin/init_relay.sh
