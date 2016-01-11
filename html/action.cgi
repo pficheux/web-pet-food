@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ./variables
+. /home/wpf/config/variables
 
 echo MIME-Version: 1.0
 echo Content-type: text/html
@@ -26,7 +26,7 @@ display_and_save ()
 
 # display & save result to cron file
 
-echo "* * * * * crontab ${BASE}/cron.tab" > ${BASE}/cron.tab
+echo "* * * * * /home/wpf/bin/wpf.update.sh" > ${BASE}/cron.tab
 
 cat << EOF > ${BASE}/current.html
 Horaires pour $PET_NAME :

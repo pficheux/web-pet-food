@@ -1,1 +1,1 @@
-* * * * * crontab /var/www/wpf/cron.tab
+* * * * * /home/wpf/bin/wpf_update.sh

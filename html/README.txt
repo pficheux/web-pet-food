@@ -3,8 +3,6 @@ set_time.html		forme de saisie des h/mn
 refresh.sh		affiche current.html + set_time.html
 action.cgi		CGI associée à la forme -> crée la table CRON
 cron.tab		table CRON initiale
-feed.sh			script appelé par CRON
-variables		paramètres
 
 display_values.sh 	script utilisé pour produire la liste des h/mn
 
@@ -20,21 +18,52 @@ Dans /etc/apache2/sites-available/default
 		AddHandler cgi-script .cgi
 	</Directory>
 
+Dans le cas d'Apache 2.7 (Ubuntu 14.03) ->
+
+Activer module CGI
+
+$ sudo a2enmod cgi
+
+Ajouter ces lignes à /etc/apache2/apache2.conf (pour ExecCGI)
+
+<Directory /var/www/html>
+        Options Indexes FollowSymLinks ExecCGI
+        AllowOverride None
+        Require all granted
+</Directory>
+
+Décommenter:
+
+AddHandler cgi-script .cgi
+
+dans /etc/apache2/mods-available/mime.conf 
+
+
 2- Copier index.cgi, refresh.sh et action.cgi dans /var/www/wpf
 
 3- Ouvrir http://localhost/wpf/index.cgi et configurer les heures/mn
 
-Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab" chargé par 'crontab' :
+Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab"
 
-* * * * * crontab /var/www/wpf/cron.tab
+* * * * * crontab /home/wpf/bin/wpf_update.sh
 00 00 * * * /var/www/wpf/feed.sh
 50 20 * * * /var/www/wpf/feed.sh
 20 21 * * * /var/www/wpf/feed.sh
 10 21 * * * /var/www/wpf/feed.sh
 
+Le scipt wpf_update.sh (exécuté sur le client) contient:
+
+#!/bin/sh
+
+. /home/wpf/config/variables
+
+wget -o ${HOME}/cron.tab ${WWW_CRON}
+crontab ${HOME}/cron.tab
+
+
 Le fichier cron.tab doit être initialisé à 
 
-* * * * * crontab /var/www/wpf/cron.tab
+* * * * * /home/wpf/bin/wpf_update.sh
 
 et appartenir à www-data:www-data (voir /etc/apache2/envvars), mode 0666
 
@@ -58,7 +87,7 @@ Le script /home/wpf/bin/feed.sh contient;
 Le système (utilisateur 'root') doit être initialisé par une table CRON 
 permettant de mettre à jour les heures d'appel (appel à crontab).
 
-* * * * * crontab /var/www/wpf/cron.tab
+* * * * * /home/wpf/bin/wpf_update.sh
 
 Le fichier /etc/rc.local contient l'appel à l'init des relais.
 
