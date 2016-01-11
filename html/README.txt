@@ -1,16 +1,26 @@
 index.cgi		page principale dynamique
-set_time.html		forme de saisie des h/mn
+set_time.html		formulaire de saisie des h/mn
 refresh.sh		affiche current.html + set_time.html
-action.cgi		CGI associée à la forme -> crée la table CRON
+action.cgi		CGI associée au formulaire -> crée la table CRON
 cron.tab		table CRON initiale
 
-display_values.sh 	script utilisé pour produire la liste des h/mn
+display_values.sh 	script utilisé au départ pour produire la liste des h/mn
 
+0- Introduction
 
-1- Modifier la config Apache2 afin d'accepter l'exécution des CGI dans
-/var/www + les noms de CGI en '.cgi' (ExecCGI + AddHandler)
+Le système est constitué :
 
-Dans /etc/apache2/sites-available/default
+- d'un serveur Web (PC Linux + Apache) permettant de produire les h/mn sous la forme d'une table CRON
+
+- d'une carte RPi pilotant le distributeur. La RPi récupère la table CRON disponible sur le serveur toutes les
+N mn
+
+1- Installation du serveur Web
+
+* Modifier la config Apache2 afin d'accepter l'exécution des CGI dans /var/www + les noms de CGI en '.cgi'
+(ExecCGI + AddHandler)
+
+* Dans /etc/apache2/sites-available/default
 
 	<Directory /var/www/>
 		Options Indexes FollowSymLinks MultiViews +ExecCGI
@@ -20,11 +30,11 @@ Dans /etc/apache2/sites-available/default
 
 Dans le cas d'Apache 2.7 (Ubuntu 14.03) ->
 
-Activer module CGI
+* Activer module CGI
 
 $ sudo a2enmod cgi
 
-Ajouter ces lignes à /etc/apache2/apache2.conf (pour ExecCGI)
+* Ajouter ces lignes à /etc/apache2/apache2.conf (pour ExecCGI)
 
 <Directory /var/www/html>
         Options Indexes FollowSymLinks ExecCGI
@@ -32,26 +42,26 @@ Ajouter ces lignes à /etc/apache2/apache2.conf (pour ExecCGI)
         Require all granted
 </Directory>
 
-Décommenter:
+* Décommenter:
 
 AddHandler cgi-script .cgi
 
 dans /etc/apache2/mods-available/mime.conf 
 
 
-2- Copier index.cgi, refresh.sh et action.cgi dans /var/www/wpf
+2- Copier index.cgi, refresh.sh et action.cgi dans /var/www/wpf (si /var/www correspond au 'DocumentRoot' Apache)
 
-3- Ouvrir http://localhost/wpf/index.cgi et configurer les heures/mn
+3- Ouvrir http://<server_addr>/wpf/index.cgi et configurer les heures/mn
 
 Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab"
 
 * * * * * crontab /home/wpf/bin/wpf_update.sh
-00 00 * * * /var/www/wpf/feed.sh
-50 20 * * * /var/www/wpf/feed.sh
-20 21 * * * /var/www/wpf/feed.sh
-10 21 * * * /var/www/wpf/feed.sh
+00 00 * * * /home/wpf/bin/feed.sh
+50 20 * * * /home/wpf/bin/feed.sh
+20 21 * * * /home/wpf/bin/feed.sh
+10 21 * * * /home/wpf/bin/feed.sh
 
-Le scipt wpf_update.sh (exécuté sur le client) contient:
+Le scipt wpf_update.sh (exécuté sur la RPi) récupère la table CRON puis l'active avec 'crontab'.
 
 #!/bin/sh
 
@@ -61,13 +71,14 @@ wget -o ${HOME}/cron.tab ${WWW_CRON}
 crontab ${HOME}/cron.tab
 
 
-Le fichier cron.tab doit être initialisé à 
+Le fichier cron.tab doit être initialisé à : 
 
 * * * * * /home/wpf/bin/wpf_update.sh
 
 et appartenir à www-data:www-data (voir /etc/apache2/envvars), mode 0666
 
 -rw-rw-rw- 1 www-data www-data   73 janv.  7 11:13 cron.tab
+
 
 Le fichier current.html doit être vide (au départ) et appartenir à www-data:www-data
 
@@ -76,20 +87,19 @@ Le fichier current.html doit être vide (au départ) et appartenir à www-data:w
 # chmod 666 current.html
 
 
-Le script /home/wpf/bin/feed.sh contient;
+Le script /home/wpf/bin/feed.sh contient :
 
 #!/bin/sh
 
-# Should call the real script here
+# Should call the real script here -> press VOL/SET
+/home/wpf/bin/relay.sh
 
 
-
-Le système (utilisateur 'root') doit être initialisé par une table CRON 
-permettant de mettre à jour les heures d'appel (appel à crontab).
+L'utilisateur 'root' de la RPi doit être initialisé par une table CRON appelant wpf_update.sh .
 
 * * * * * /home/wpf/bin/wpf_update.sh
 
-Le fichier /etc/rc.local contient l'appel à l'init des relais.
+Le fichier /etc/rc.local (sur la RPi) contient l'appel à l'init des relais.
 
 # WPF
 /home/wpf/bin/init_relay.sh
