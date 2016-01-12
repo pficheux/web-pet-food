@@ -51,6 +51,13 @@ dans /etc/apache2/mods-available/mime.conf
 
 2- Copier index.cgi, refresh.sh et action.cgi dans /var/www/wpf (si /var/www correspond au 'DocumentRoot' Apache)
 
+Le fichier current.html doit être vide (au départ) et appartenir à www-data:www-data
+
+# echo > current.html
+# chown www-data:www-data current.html
+# chmod 666 current.html
+
+
 3- Ouvrir http://<server_addr>/wpf/index.cgi et configurer les heures/mn
 
 Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab"
@@ -61,13 +68,18 @@ Le script "action.cgi" crée un fichier "/var/www/wpf/cron.tab"
 20 21 * * * /home/wpf/bin/feed.sh
 10 21 * * * /home/wpf/bin/feed.sh
 
-Le scipt wpf_update.sh (exécuté sur la RPi) récupère la table CRON puis l'active avec 'crontab'.
+La zone géographique doit être correctmenet configurée:
+
+# rm /etc/localtime
+# ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtimer
+
+Le script wpf_update.sh (exécuté sur la RPi) récupère la table CRON puis l'active avec 'crontab'.
 
 #!/bin/sh
 
 . /home/wpf/config/variables
 
-wget -o ${HOME}/cron.tab ${WWW_CRON}
+wget -q -O ${HOME}/cron.tab ${WWW_CRON}
 crontab ${HOME}/cron.tab
 
 
@@ -78,14 +90,6 @@ Le fichier cron.tab doit être initialisé à :
 et appartenir à www-data:www-data (voir /etc/apache2/envvars), mode 0666
 
 -rw-rw-rw- 1 www-data www-data   73 janv.  7 11:13 cron.tab
-
-
-Le fichier current.html doit être vide (au départ) et appartenir à www-data:www-data
-
-# echo > current.html
-# chown www-data:www-data current.html
-# chmod 666 current.html
-
 
 Le script /home/wpf/bin/feed.sh contient :
 
