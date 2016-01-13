@@ -73,16 +73,14 @@ La zone géographique doit être correctemenet configurée:
 # rm /etc/localtime
 # ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtimer
 
-On doit ensuite créer l'utilisateur 'wpf' et lui attribuer un mot de passe. Le groupe doit être 'gpio' afin de pouvoir
-accéder aux GPIO par /sys/class/gpio.
+On doit ensuite créer l'utilisateur 'wpf' et lui attribuer un mot de passe. Le groupe doit être 'gpio' afin de pouvoir accéder aux GPIO par /sys/class/gpio.
 
 # useradd -g gpio -m wpf
 # passwd wpf
 
 On peut alors copier le contenu de config/ et bin/ sur /home/wpf.
 
-Le script wpf_update.sh récupère la table CRON puis l'active par la commande 'crontab'. Il
-contient :
+Le script wpf_update.sh récupère la table CRON puis l'active par la commande 'crontab'. Il contient :
 
 #!/bin/sh
 
