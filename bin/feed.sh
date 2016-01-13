@@ -1,4 +1,6 @@
 #!/bin/sh
 
-# Should call the real script here
+# Press VOL/SEL
+/home/wpf/bin/relay.sh
+
 

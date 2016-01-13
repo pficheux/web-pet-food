@@ -1,5 +1,7 @@
 #!/bin/sh
-
+#
+# Production automatique du formulaire de saisie HH/MM
+#
 i=0
 
 echo "<BODY>"

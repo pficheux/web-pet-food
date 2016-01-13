@@ -1,0 +1,111 @@
+0- Introduction
+
+Le système est constitué :
+
+- d'un serveur Web (PC Linux + Apache) permettant de produire les h/mn sous la forme d'une table CRON
+
+- d'une carte RPi pilotant le distributeur par un relais connecté aux GPIO
+
+La RPi récupère la table CRON disponible sur le serveur toutes les 5 mn (par défaut) et l'affecte à l'utilisateur 'wpf'.
+
+1- Installation du serveur (PC Linux)
+
+Dans le cas d'Apache 2.2 (Unutun 12.04) :
+
+* Modifier la config Apache2 afin d'accepter l'exécution des CGI dans /var/www + les noms de CGI en '.cgi'
+(ExecCGI + AddHandler)
+
+* Dans /etc/apache2/sites-available/default
+
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews +ExecCGI
+		...
+		AddHandler cgi-script .cgi
+	</Directory>
+
+Dans le cas d'Apache 2.7 (Ubuntu 14.03) :
+
+* Activer module CGI
+
+$ sudo a2enmod cgi
+
+* Ajouter ces lignes à /etc/apache2/apache2.conf (pour ExecCGI)
+
+<Directory /var/www/html>
+        Options Indexes FollowSymLinks ExecCGI
+        AllowOverride None
+        Require all granted
+</Directory>
+
+* Décommenter:
+
+AddHandler cgi-script .cgi
+
+dans /etc/apache2/mods-available/mime.conf 
+
+
+
+On peut alors copier index.cgi, refresh.sh, set_time.html et action.cgi dans /var/www/wpf (si /var/www correspond au 'DocumentRoot' Apache)
+
+Les fichiers current.html et cron.tab sont vides (au départ !) et doivent appartenir à www-data:www-data :
+
+# cd /var/www/wpf
+# echo > current.html
+# chown www-data:www-data current.html
+# echo > cron.tab
+# chown www-data:www-data cron.tab
+
+
+On ouvre http://<server_addr>/wpf/index.cgi pour configurer les heures/mn.
+
+Le script "action.cgi" met à jour le fichier /var/www/wpf/cron.tab :
+
+5,10,15,20,25,30,35,40,45,50,55 * * * * crontab /home/wpf/bin/wpf_update.sh
+00 00 * * * /home/wpf/bin/feed.sh
+50 20 * * * /home/wpf/bin/feed.sh
+20 21 * * * /home/wpf/bin/feed.sh
+10 21 * * * /home/wpf/bin/feed.sh
+
+2- Installation du client (Raspberry Pi)
+
+La zone géographique doit être correctemenet configurée:
+
+# rm /etc/localtime
+# ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtimer
+
+On doit ensuite créer l'utilisateur 'wpf' et lui attribuer un mot de passe. Le groupe doit être 'gpio' afin de pouvoir
+accéder aux GPIO par /sys/class/gpio.
+
+# useradd -g gpio -m wpf
+# passwd wpf
+
+On peut alors copier le contenu de config/ et bin/ sur /home/wpf.
+
+Le script wpf_update.sh récupère la table CRON puis l'active par la commande 'crontab'. Il
+contient :
+
+#!/bin/sh
+
+. /home/wpf/config/variables
+
+wget -q -O ${HOME}/cron.tab ${WWW_CRON}
+crontab ${HOME}/cron.tab
+
+On initialise le système en faisant un premier appel manuel.
+
+$ ./bin/wpf_update.sh
+
+
+Le script /home/wpf/bin/feed.sh contient l'appel à feed.sh :
+
+#!/bin/sh
+
+# Press VOL/SEL
+/home/wpf/bin/relay.sh
+
+
+
+Les traces de l'exécution du CRON sont visibles dans /var/log/syslog :
+
+# grep CMD /var/log/syslog
+...
