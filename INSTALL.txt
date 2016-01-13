@@ -45,7 +45,7 @@ dans /etc/apache2/mods-available/mime.conf
 
 
 
-On peut alors copier index.cgi, refresh.sh, set_time.html et action.cgi dans /var/www/wpf (si /var/www correspond au 'DocumentRoot' Apache)
+On peut alors copier variables, index.cgi, refresh.sh, set_time.html et action.cgi dans /var/www/wpf (si /var/www correspond au 'DocumentRoot' Apache)
 
 Les fichiers current.html et cron.tab sont vides (au départ !) et doivent appartenir à www-data:www-data :
 
@@ -78,7 +78,7 @@ On doit ensuite créer l'utilisateur 'wpf' et lui attribuer un mot de passe. Le 
 # useradd -g gpio -m wpf
 # passwd wpf
 
-On peut alors copier le contenu de config/ et bin/ sur /home/wpf.
+On peut alors copier le contenu de client/ (config/ et bin/) dans /home/wpf.
 
 Le script wpf_update.sh récupère la table CRON puis l'active par la commande 'crontab'. Il contient :
 

@@ -1,0 +1,5 @@
+# Variables for WPF client (RPi)
+
+# URL for CRON table
+WWW_CRON=http://pficheux.homelinux.com:8080/wpf/cron.tab
+

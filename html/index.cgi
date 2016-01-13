@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /home/wpf/config/variables
+. ./variables
 
 echo MIME-Version: 1.0
 echo Content-type: text/html
