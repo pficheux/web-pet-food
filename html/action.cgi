@@ -26,7 +26,8 @@ display_and_save ()
 
 # display & save result to cron file
 
-echo "5,10,15,20,25,30,35,40,45,50,55 * * * * /home/wpf/bin/wpf.update.sh" > ${BASE}/cron.tab
+echo "5,10,15,20,25,30,35,40,45,50,55 * * * * /home/wpf/bin/wpf_update.sh" > ${BASE}/cron.tab
+echo "2 * * * * /home/wpf/bin/check_connection.sh" >> ${BASE}/cron.tab
 
 cat << EOF > ${BASE}/current.html
 Horaires pour $PET_NAME :
