@@ -1,0 +1,9 @@
+# Variables for WPF server
+
+# Pet name
+export PET_NAME=Hanae
+
+# base directory
+export BASE=/var/www/wpf
+
+
