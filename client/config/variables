@@ -1,5 +1,8 @@
 # Variables for WPF client (RPi)
 
+# Test address (could be your local router -> .254)
+TEST_ADDR=www.google.fr
+
 # URL for CRON table
 WWW_CRON=http://pficheux.homelinux.com:8080/wpf/cron.tab
 
