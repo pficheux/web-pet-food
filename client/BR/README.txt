@@ -7,4 +7,8 @@ Test avec BR 2015.0.1 + noyau 3.18.16
 # wpa_supplicant -i wlan0 -D wext -c test.conf -B
 # udhcpc -i wlan0
 
-- démarrage auto à voir
+- Ajout EUDEV -> chargement pilotes
+
+- ifup/ifdown Busybox ne gèrent pas wpa_supplicant -> tester avec les versions Debian
+
+
