@@ -9,6 +9,8 @@ Test avec BR 2015.0.1 + noyau 3.18.16
 
 - Ajout EUDEV -> chargement pilotes
 
-- ifup/ifdown Busybox ne gèrent pas wpa_supplicant -> tester avec les versions Debian
+- Ajout /etc/network/if-pre-up.d/wpa_supplicant (trouvé sur Yocto !)
+
+- Ajout /etc/network/if-pre-down.d/wpa_supplicant (lien symbolique sur le précédent)
 
 
