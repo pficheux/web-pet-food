@@ -22,6 +22,8 @@ null::sysinit:/bin/mount -a
 null::sysinit:/bin/hostname -F /etc/hostname
 # Load french keyboard
 null::sysinit:/usr/bin/loadkeys /usr/share/keymaps/i386/azerty/fr.map.gz
+# Start CRON daemon
+null::sysinit:/usr/sbin/crond
 
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS

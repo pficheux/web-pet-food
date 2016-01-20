@@ -12,3 +12,5 @@
 #dwc_otg.lpm_enable=0 console=ttyAMA0,115200 root=/dev/nfs rootfstype=nfs nfsroot=192.168.2.1:/home/stage/rootfs_rpi ip=192.168.2.2:::::eth0:off
 # BR SD Card
 dwc_otg.lpm_enable=0 console=ttyAMA0,115200 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait EXTRA_OPTS
+# InitRD
+#dwc_otg.lpm_enable=0 console=ttyAMA0,115200 rootwait EXTRA_OPTS
