@@ -1,0 +1,12 @@
+# Variables for WPF client (RPi)
+
+# Test address (could be your local router -> .254)
+TEST_ADDR=127.0.0.1
+
+# URL for CRON table
+WWW_CRON=http://pficheux.homelinux.com:8080/wpf.test/cron.tab
+
+# Wi-Fi
+WPA_SSID=linksys_cd
+WPA_PSK="hanaefaitdesbetises"
+

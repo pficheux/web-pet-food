@@ -73,6 +73,9 @@ mkfs.vfat -n "Boot" -S 512 -C ${CURRENT_DIR}/boot.img $BOOT_BLOCKS
 # Update cmdline.txt with optional boot params
 shift
 cat $CURRENT_DIR/../../board/raspberrypi/cmdline.txt | sed -e "s/EXTRA_OPTS/$*/g" > $CURRENT_DIR/rpi-firmware/cmdline.txt
+# Copy WPF config
+#cp $CURRENT_DIR/../../board/raspberrypi/variables.txt ${CURRENT_DIR}/rpi-firmware/variables.txt
+
 # Copy boot files
 mcopy -i ${CURRENT_DIR}/boot.img -s ${CURRENT_DIR}/rpi-firmware/* ::/
 # Copy kernel
