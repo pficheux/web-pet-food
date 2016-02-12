@@ -2,7 +2,11 @@
 
 . /home/wpf/config/variables.txt
 
-ping -q -c 1 ${TEST_ADDR} 1> /dev/null 2>&1
+# Test network
+X=$(route | grep default)
+set $X
+
+ping -q -c 1 $2 1> /dev/null 2>&1
 if [ $? -ne 0 ]; then
     ifup wlan0
 fi	
