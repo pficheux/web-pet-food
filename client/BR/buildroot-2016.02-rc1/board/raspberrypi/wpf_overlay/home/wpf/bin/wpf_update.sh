@@ -8,6 +8,7 @@ set $X
 
 ping -q -c 1 $2 1> /dev/null 2>&1
 if [ $? -ne 0 ]; then
+    ifdown wlan0
     ifup wlan0
 fi	
 
