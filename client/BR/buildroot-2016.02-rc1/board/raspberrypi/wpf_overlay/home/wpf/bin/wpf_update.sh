@@ -3,8 +3,7 @@
 . /home/wpf/config/variables.txt
 
 # Test network
-X=$(route | grep default)
-set $X
+set $(route | grep default)
 
 ping -q -c 1 $2 1> /dev/null 2>&1
 if [ $? -ne 0 ]; then
