@@ -20,7 +20,7 @@ CF=${HOME}/cron.tab
 mv ${CF} ${CF}.old
 wget -O ${CF} ${WWW_CRON}
 
-# load CRON table if no error, else do nothing
+# load CRON table if no error, else replace by the old one 
 
 if [ -r ${CF} -a $? -eq 0 ]; then
     crontab ${CF}
