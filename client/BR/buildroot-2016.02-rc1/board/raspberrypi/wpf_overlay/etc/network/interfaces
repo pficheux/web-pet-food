@@ -7,7 +7,8 @@ iface lo inet loopback
 # Wireless interfaces
 auto wlan0
 iface wlan0 inet dhcp
-	udhcpc_opts -t 10
+#	udhcpc_opts -t 10
+	udhcpc_opts -t 2
 	wireless_mode managed
 	wireless_essid any
 	pre-up wpa_supplicant -B -D wext -i wlan0 -c /etc/wpa_supplicant.conf
